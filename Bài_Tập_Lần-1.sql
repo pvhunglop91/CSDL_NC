@@ -54,6 +54,37 @@ GO
 	ALTER TABLE dbo.ORDER_DETAIL ADD FOREIGN KEY(MaHD) REFERENCES dbo.ORDERS(MaHD);
 	ALTER TABLE dbo.ORDERS ADD FOREIGN KEY(MaKH) REFERENCES dbo.CUSTOMERS(MaKH);
 	ALTER TABLE dbo.ORDERS ADD FOREIGN KEY(MaPTTT) REFERENCES dbo.PAYMENTSS(MaPTTT);
+
+--Nhập dữ liệu
+INSERT INTO CUSTOMERS (MaKH,HoTen,Email,Phone,DiaChi)
+VALUES ('KH001','Nguyen Thi Uyen','uyenn@gmail.com','0397695379','Da Nang')
+INSERT INTO CUSTOMERS (MaKH,HoTen,Email,Phone,DiaChi)
+VALUES ('KH002','Tran Thi Thuy','thuy@gmail.com','0394758299','Da Nang')
+SELECT * FROM CUSTOMERS
+
+INSERT INTO PRODUCTS (MaSP,TenSP,MoTa,GiaSP,SoLuong)
+VALUES ('SP001','Banh my','Banh my thit cha',15,10)
+INSERT INTO PRODUCTS (MaSP,TenSP,MoTa,GiaSP,SoLuong)
+VALUES ('SP002','Mi tron cung dinh (ly)','Mi tron an lien',12,24)
+SELECT * FROM PRODUCTS
+
+INSERT INTO ORDER_DETAIL (MaHD_De_id,MaHD,MaSP,SLuongSPM,ThanhTien)
+VALUES ('001','HD001','SP002',2,24)
+SELECT * FROM ORDER_DETAIL
+
+INSERT INTO PAYMENTSS (MaPTTT,TenPTTT,PhiPTTT)
+VALUES ('PTTT01','Thanh toan khi nhan hang',0)
+INSERT INTO PAYMENTSS (MaPTTT,TenPTTT,PhiPTTT)
+VALUES ('PTTT02','Thanh toan qua Internet Banking',0)
+SELECT * FROM PAYMENTSS
+
+INSERT INTO ORDERS (MaHD,MaKH,NgayDH,TrangThaiDH,TongTien,MaPTTT)
+VALUES ('HD001','KH001','2022-01-12','Thanh cong',12,'PTTT01')
+INSERT INTO ORDERS (MaHD,MaKH,NgayDH,TrangThaiDH,TongTien,MaPTTT)
+VALUES ('HD002','KH002','2022-01-29','Thanh cong',15,'PTTT02')
+SELECT * FROM ORDERS
+
+
   --nâng cao 1 :tìm thông tin của những khách hàng có đơn hàng lớn hơn 10.000d và đặt hàng trước 8-3-2022
   select * from CUSTOMERS join ORDERS
   on CUSTOMERS.MaKH = ORDERS.MaKH
