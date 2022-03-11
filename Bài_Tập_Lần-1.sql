@@ -23,12 +23,12 @@ CREATE TABLE PRODUCTS(
 GO
 
 CREATE TABLE ORDER_DETAIL(
-	MaHD_De_id VARCHAR(10) NOT NULL,
-	MaHD VARCHAR(10) NOT NULL,--khoá ngoại
+	MaDH_detail VARCHAR(10) NOT NULL,
+	MaDH VARCHAR(10) NOT NULL,--khoá ngoại
 	MaSP VARCHAR(10) NOT NULL,--khoá ngoại
 	SLuongSPM INT,
 	ThanhTien float,
-	PRIMARY KEY(MaHD_De_id, MaHD, MaSP)
+	PRIMARY KEY(MaDH_detail, MaDH, MaSP)
 )
 GO
 
@@ -40,7 +40,7 @@ CREATE TABLE PAYMENTSS(
 GO
 
 CREATE TABLE ORDERS(
-	MaHD VARCHAR(10) NOT NULL primary key,
+	MaDH VARCHAR(10) NOT NULL primary key,
 	MaKH VARCHAR(10) NOT NULL,--khoá ngoại
 	NgayDH DATE,
 	TrangThaiDH NVARCHAR(255),
@@ -51,38 +51,81 @@ GO
 
 -- liên kết khoá ngoại
 	ALTER TABLE dbo.ORDER_DETAIL ADD FOREIGN KEY(MaSP) REFERENCES dbo.PRODUCTS(MaSP);
-	ALTER TABLE dbo.ORDER_DETAIL ADD FOREIGN KEY(MaHD) REFERENCES dbo.ORDERS(MaHD);
+	ALTER TABLE dbo.ORDER_DETAIL ADD FOREIGN KEY(MaDH) REFERENCES dbo.ORDERS(MaDH);
 	ALTER TABLE dbo.ORDERS ADD FOREIGN KEY(MaKH) REFERENCES dbo.CUSTOMERS(MaKH);
 	ALTER TABLE dbo.ORDERS ADD FOREIGN KEY(MaPTTT) REFERENCES dbo.PAYMENTSS(MaPTTT);
 
 --Nhập dữ liệu
+--Customer
 INSERT INTO CUSTOMERS (MaKH,HoTen,Email,Phone,DiaChi)
 VALUES ('KH001','Nguyen Thi Uyen','uyenn@gmail.com','0397695379','Da Nang')
 INSERT INTO CUSTOMERS (MaKH,HoTen,Email,Phone,DiaChi)
 VALUES ('KH002','Tran Thi Thuy','thuy@gmail.com','0394758299','Da Nang')
+INSERT INTO CUSTOMERS (MaKH,HoTen,Email,Phone,DiaChi)
+VALUES ('KH003','Phan Van Hung','hung@gmail.com','0905231444','Hue')
+INSERT INTO CUSTOMERS (MaKH,HoTen,Email,Phone,DiaChi)
+VALUES ('KH004','Tran Trong Tuyen','tuyen@gmail.com','0931231031','Quang Ngai')
+INSERT INTO CUSTOMERS (MaKH,HoTen,Email,Phone,DiaChi)
+VALUES ('KH005','Tran Nhat Khanh Lan','lan@gmail.com','0931313131','Da Nang')
 SELECT * FROM CUSTOMERS
+DELETE FROM dbo.CUSTOMERS
 
+
+--product
 INSERT INTO PRODUCTS (MaSP,TenSP,MoTa,GiaSP,SoLuong)
-VALUES ('SP001','Banh my','Banh my thit cha',15,10)
+VALUES ('SP001','Banh my','Banh my thit cha',15000,10)
 INSERT INTO PRODUCTS (MaSP,TenSP,MoTa,GiaSP,SoLuong)
-VALUES ('SP002','Mi tron cung dinh (ly)','Mi tron an lien',12,24)
+VALUES ('SP002','Mi tron cung dinh (ly)','Mi tron an lien',12000,24)
+INSERT INTO PRODUCTS (MaSP,TenSP,MoTa,GiaSP,SoLuong)
+VALUES ('SP003','Xoi lac','Ngon',10000,50)
+INSERT INTO PRODUCTS (MaSP,TenSP,MoTa,GiaSP,SoLuong)
+VALUES ('SP004','Nuoc cam ep','Chai',16000,100)
 SELECT * FROM PRODUCTS
+DELETE FROM dbo.PRODUCTS
 
-INSERT INTO ORDER_DETAIL (MaHD_De_id,MaHD,MaSP,SLuongSPM,ThanhTien)
-VALUES ('001','HD001','SP002',2,24)
-SELECT * FROM ORDER_DETAIL
-
+--payment
 INSERT INTO PAYMENTSS (MaPTTT,TenPTTT,PhiPTTT)
 VALUES ('PTTT01','Thanh toan khi nhan hang',0)
 INSERT INTO PAYMENTSS (MaPTTT,TenPTTT,PhiPTTT)
 VALUES ('PTTT02','Thanh toan qua Internet Banking',0)
+INSERT INTO PAYMENTSS (MaPTTT,TenPTTT,PhiPTTT)
+VALUES ('PTTT03','Thanh toan qua Momo',10000)
+INSERT INTO PAYMENTSS (MaPTTT,TenPTTT,PhiPTTT)
+VALUES ('PTTT04','Thanh toan qua Zalopay',10001)
 SELECT * FROM PAYMENTSS
+DELETE FROM dbo.PAYMENTSS
 
-INSERT INTO ORDERS (MaHD,MaKH,NgayDH,TrangThaiDH,TongTien,MaPTTT)
-VALUES ('HD001','KH001','2022-01-12','Thanh cong',12,'PTTT01')
-INSERT INTO ORDERS (MaHD,MaKH,NgayDH,TrangThaiDH,TongTien,MaPTTT)
-VALUES ('HD002','KH002','2022-01-29','Thanh cong',15,'PTTT02')
+--order
+INSERT INTO ORDERS (MaDH,MaKH,NgayDH,TrangThaiDH,TongTien,MaPTTT)
+VALUES ('DH001','KH001','2022-01-12','Thanh cong',240000,'PTTT01')
+INSERT INTO ORDERS (MaDH,MaKH,NgayDH,TrangThaiDH,TongTien,MaPTTT)
+VALUES ('DH002','KH002','2022-01-29','Thanh cong',450000,'PTTT02')
+INSERT INTO ORDERS (MaDH,MaKH,NgayDH,TrangThaiDH,TongTien,MaPTTT)
+VALUES ('DH003','KH003','2022-01-11','Dang chuan bi hang',1000000,'PTTT02')
+INSERT INTO ORDERS (MaDH,MaKH,NgayDH,TrangThaiDH,TongTien,MaPTTT)
+VALUES ('DH004','KH004','2022-02-12','Dang chuan bi hang',320000,'PTTT02')
+INSERT INTO ORDERS (MaDH,MaKH,NgayDH,TrangThaiDH,TongTien,MaPTTT)
+VALUES ('DH005','KH005','2022-02-19','Thanh cong',120000,'PTTT01')
+INSERT INTO ORDERS (MaDH,MaKH,NgayDH,TrangThaiDH,TongTien,MaPTTT)
+VALUES ('DH006','KH001','2022-02-20','Thanh cong',320000,'PTTT04')
 SELECT * FROM ORDERS
+DELETE FROM dbo.ORDERS
+
+
+--order_detail
+INSERT INTO ORDER_DETAIL (MaDH_detail,MaDH,MaSP,SLuongSPM,ThanhTien)
+VALUES ('001','DH001','SP002',2,24000)
+INSERT INTO ORDER_DETAIL (MaDH_detail,MaDH,MaSP,SLuongSPM,ThanhTien)
+VALUES ('002','DH002','SP001',3,45000)
+INSERT INTO ORDER_DETAIL (MaDH_detail,MaDH,MaSP,SLuongSPM,ThanhTien)
+VALUES ('003','DH003','SP003',10,100000)
+INSERT INTO ORDER_DETAIL (MaDH_detail,MaDH,MaSP,SLuongSPM,ThanhTien)
+VALUES ('004','DH004','SP004',20,320000)
+INSERT INTO ORDER_DETAIL (MaDH_detail,MaDH,MaSP,SLuongSPM,ThanhTien)
+VALUES ('004','DH004','SP002',26,312000)
+SELECT * FROM ORDER_DETAIL
+DELETE FROM dbo.ORDER_DETAIL
+
 
 
   --nâng cao 1 :tìm thông tin của những khách hàng có đơn hàng lớn hơn 10.000d và đặt hàng trước 8-3-2022
@@ -91,7 +134,7 @@ SELECT * FROM ORDERS
   where TongTien > 10000 and NgayDH < '2022-3-8'
   go
    --nâng cao 2 :tìm những đơn hàng có phí thanh toán lớn hơn 10.000d 
-  select * from ORDERS join PAYMENTSS
+  select * from ORDERS join dbo.PAYMENTSS
   on ORDERS.MaPTTT = PAYMENTSS.MaPTTT
   where PhiPTTT > 10000
   go
@@ -119,24 +162,24 @@ AS
 --view 3: Tạo 1 khung hình hiển thị thông tin các đơn đặt hàng trong năm nay
 CREATE VIEW V_thongTinDH
 AS
-	SELECT  DISTINCT c.MaKH, c.HoTen, od.maDH, od.NgayDH, od.TongTien, od.TrangThaiDH	
+	SELECT  c.MaKH, c.HoTen, od.maDH, od.NgayDH, od.TongTien, od.TrangThaiDH 
 	FROM dbo.CUSTOMERS c 
 		JOIN dbo.ORDERS od ON od.MaKH = c.MaKH
-		JOIN dbo.ORDER_DETAIL ON ORDER_DETAIL.MaHD = od.MaDH
 	WHERE YEAR(od.NgayDH) = YEAR(GETDATE())
 
 SELECT * FROM V_thongTinDH
+DROP VIEW V_thongTinDH
 
---view 4: Tạo View có tổng số lượng sp được mua lớn hơn 26 
+--view 4: Tạo View có tổng số lượng sp được mua lớn hơn or = 26 
 CREATE VIEW DonHangCuaHang AS
 SELECT p.MaSP, TenSP, SUM(SLuongSPM) AS TongSoLuong FROM PRODUCTS p
 LEFT OUTER JOIN ORDER_DETAIL d ON p.MaSP = d.MaSP  
 GROUP BY p.MaSP, TenSP
-HAVING SUM(SLuongSPM) > 26
+HAVING SUM(SLuongSPM) >= 26
 GO
 
 SELECT * FROM DonHangCuaHang 
-
+DROP VIEW DonHangCuaHang
 --view 5: Tạo View có khách hàng thanh toán bằng phương thức Internet Banking 
 CREATE VIEW Phuongthucthanhtoan AS
 SELECT p.MaKH, c.HoTen, c.DiaChi FROM ORDERS p
@@ -240,7 +283,7 @@ CREATE PROC Pro_N3
 	@ThanhTien FLOAT
 AS
 BEGIN
-    IF @SLuongSPM > 0 AND EXISTS (SELECT MaHD FROM ORDERS WHERE MaHD = @MaHD)
+    IF @SLuongSPM > 0 AND EXISTS (SELECT MaDH FROM ORDERS WHERE MaDH = @MaHD)
 	   BEGIN
           INSERT INTO ORDER_DETAIL
           VALUES(@MaHD_De_id,@MaHD,@MaSP,@SLuongSPM,@ThanhTien)
